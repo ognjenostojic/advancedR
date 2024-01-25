@@ -1,0 +1,11 @@
+exportPattern("^[[:alpha:]]+")
+
+exportPattern("^[[:alpha:]]+")
+#' @importFrom ggplot2 ggplot geom_line geom_point aes
+#' @importFrom dplyr %>% filter select
+#' @importFrom data.table data.table setDT
+#' @importFrom ncdf4 nc_open ncvar_get nc_close
+#' @importFrom ggplot2 ggplot geom_line geom_point aes
+#' @importFrom dplyr %>% filter select
+#' @importFrom data.table data.table setDT
+#' @importFrom ncdf4 nc_open ncvar_get nc_close

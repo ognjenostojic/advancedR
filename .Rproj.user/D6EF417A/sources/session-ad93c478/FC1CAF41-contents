@@ -1,0 +1,49 @@
+library(CoSMoS);
+library(data.table);
+library(ncdf4)
+library(zoo)
+library(extRemes)
+library(ggplot2)
+library(dplyr)
+
+create_and_save_idf_plots <- function(results_list) {
+  for (i in seq_along(results_list)) {
+    tryCatch({
+      dta <- results_list[[i]]
+      date <- substr(dta$readable_dates, 1, 4)
+      
+      # Ensure 'date' and 'val' columns are present
+      if (!"date" %in% names(dta) || !"val" %in% names(dta)) {
+        stop("Data frame must contain 'date' and 'val' columns.")
+      }
+      
+      # Convert to data.table, if not already
+      if (!data.table::is.data.table(dta)) {
+        dta <- data.table::as.data.table(dta)
+      }
+      
+      # Process the date column
+      dta[, date := as.POSIXct(date, origin = "1970-01-01", tz = "UTC")]
+      
+      # Calculate IDF
+      test <- idf(x = dta)
+      
+      # Generate plot
+      p <- ggplot2::ggplot(data = test, ggplot2::aes(x = as.numeric(dur), y = value, colour = rp)) +
+        ggplot2::geom_line() +
+        ggplot2::geom_point() +
+        ggplot2::scale_colour_manual(name = "Return\nperiod",
+                                     values = c("yellow4", "steelblue", "red4", "darkgreen", "pink", "magenta4")) +
+        ggplot2::labs(x = "Duration (hours)", y = "Intensity (mm/h)", title = paste("IDF curve for year ", date)) +
+        ggplot2::theme_bw()
+      
+      # Save the plot
+      ggplot2::ggsave(filename = paste0("IDF_plot_year_", i, ".png"), plot = p, width = 10, height = 8)
+      
+    }, error = function(e) {
+      message("Error processing data at index: ", i)
+      message("Error message: ", e$message)
+    })
+  }
+}
+

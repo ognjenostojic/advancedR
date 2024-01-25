@@ -1,0 +1,15 @@
+Package: idfPackage
+Type: Package
+Title: IDF curves computation and plotting
+Version: 0.1.2
+Author: Ognjen Ostojić
+Maintainer: The package maintainer <xosto002@studenti.czu.cz>
+Description: This package reads .nc files, process them and plots idf graphs for these files.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Imports: CoSMoS, data.table, ncdf4, zoo, extRemes, ggplot2, dplyr
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+RoxygenNote: 7.3.1
